@@ -3,15 +3,31 @@ using System.Collections.Generic;
 
 public class Sequence : CompositeNode
 {
+	private int _currentNode, _previousTick;
+
+	public override void Init()
+	{
+		_currentNode = 0;
+		_previousTick = -1;
+	}
+
 	public override Result Process(Dictionary<String, Object> datastore)
 	{
-		Result result = Result.SUCCESS;
+		Result result = Result.RUNNING;
 
-		foreach(Node node in _nodes)
+		for(/* _currentNode */; _currentNode < _nodes.Count; _currentNode++)
 		{
-			node.Init();
+			Node node = _nodes[_currentNode];
+
+			// If this isn't the same node we were processing
+			// last tick then we need to Init it.
+			if(_currentNode != _previousTick) node.Init();
+
 			result = node.Process(datastore);
-			if(result != Result.SUCCESS) break;
+			_previousTick = _currentNode;
+
+			if(result == Result.SUCCESS) continue;
+			else break;
 		}
 
 		return result;
