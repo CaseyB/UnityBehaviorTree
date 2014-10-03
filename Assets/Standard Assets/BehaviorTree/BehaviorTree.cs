@@ -11,7 +11,11 @@ public class BehaviorTree : MonoBehaviour
 	void Awake()
 	{
 		_dataStore = new Dictionary<System.String, System.Object>();
-		// Parse behavior script
+		// Parse behavior script but for now hard code;
+		Selector selector = new Selector ();
+		selector.AddNode(new ThreeTicksThenFail());
+		selector.AddNode(new ThreeTicksThenSucceed());
+		_root = selector;
 	}
 
 	void Start()
