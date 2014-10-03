@@ -8,4 +8,6 @@ public abstract class CompositeNode : Node
 	{
 		_nodes.Add(node);
 	}
+
+	public override void Init() { /*  Don't force implmentation */ }
 }

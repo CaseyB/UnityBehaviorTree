@@ -9,6 +9,7 @@ public class Sequence : CompositeNode
 
 		foreach(Node node in _nodes)
 		{
+			node.Init();
 			result = node.Process(datastore);
 			if(result != Result.SUCCESS) break;
 		}

@@ -9,6 +9,7 @@ public class Selector : CompositeNode
 
 		foreach(Node node in _nodes)
 		{
+			node.Init();
 			result = node.Process(datastore);
 			if(result != Result.FAILURE) break;
 		}

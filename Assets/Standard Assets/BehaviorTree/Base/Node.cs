@@ -10,5 +10,6 @@ public abstract class Node
 		RUNNING
 	}
 
+	public abstract void Init();
 	public abstract Result Process(Dictionary<String, Object> datastore);
 }
