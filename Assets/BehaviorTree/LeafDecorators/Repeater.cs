@@ -15,11 +15,11 @@ public class Repeater : LeafDecorator
 		_count = 0;
 	}
 
-	public override Result Tick()
+	public override Result Process(Dictionary<String, Object> datastore)
 	{
 		if(_target == -1 || _count < _target)
 		{
-			Result result = _leaf.Tick();
+			Result result = _leaf.Process(datastore);
 			if(result != Result.RUNNING) _count++;
 		}
 

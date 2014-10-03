@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public class Succeeder : LeafDecorator
 {
-	public override Result Tick()
+	public override Result Process(Dictionary<String, Object> datastore)
 	{
-		_leaf.Tick();
+		_leaf.Process(datastore);
 		return Result.SUCCESS;
 	}
 }

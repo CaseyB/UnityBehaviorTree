@@ -10,5 +10,5 @@ public abstract class Node
 		RUNNING
 	}
 
-	public abstract Result Tick();
+	public abstract Result Process(Dictionary<String, Object> datastore);
 }
