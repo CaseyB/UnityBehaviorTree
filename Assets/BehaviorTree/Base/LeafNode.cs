@@ -1,6 +1,3 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public abstract class LeafNode : Node
+﻿public abstract class LeafNode : Node
 {
 }
