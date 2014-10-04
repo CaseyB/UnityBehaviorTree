@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ThreeTicksThenFail : LeafNode
 {
@@ -12,6 +13,7 @@ public class ThreeTicksThenFail : LeafNode
 	public override Result Process(Dictionary<System.String, System.Object> datastore)
 	{
 		_ticks++;
+		Debug.Log("Tick " + _ticks);
 		if(_ticks < 3) return Result.RUNNING;
 		else return Result.FAILURE;
 	}

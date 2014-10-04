@@ -32,6 +32,7 @@ public class BehaviorTree : MonoBehaviour
 		if(result != Node.Result.RUNNING)
 		{
 			_done = true;
+			Debug.Log("Result " + result);
 		}
 	}
 }

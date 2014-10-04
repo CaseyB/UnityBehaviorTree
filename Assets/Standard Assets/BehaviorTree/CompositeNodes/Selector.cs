@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Selector : CompositeNode
 {
@@ -11,7 +12,7 @@ public class Selector : CompositeNode
 		_previousTick = -1;
 	}
 	
-	public override Result Process(Dictionary<String, Object> datastore)
+	public override Result Process(Dictionary<String, System.Object> datastore)
 	{
 		Result result = Result.RUNNING;
 		
@@ -26,10 +27,11 @@ public class Selector : CompositeNode
 			result = node.Process(datastore);
 			_previousTick = _currentNode;
 
+			Debug.Log("Result " + result);
 			if(result == Result.FAILURE) continue;
 			else break;
 		}
-		
+
 		return result;
 	}
 }
