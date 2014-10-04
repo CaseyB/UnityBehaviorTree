@@ -16,7 +16,11 @@ public class BehaviorTree : MonoBehaviour
 
 		// Parse behavior script but for now hard code;
 		Selector selector = new Selector ();
-		selector.AddNode(new ThreeTicksThenFail());
+
+		Node node = new ThreeTicksThenFail();
+		Inverter inverter = new Inverter();
+		inverter.Node = node;
+		selector.AddNode(inverter);
 		selector.AddNode(new ThreeTicksThenSucceed());
 		_root = selector;
 	}
