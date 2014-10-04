@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class Repeater : LeafDecorator
+public class Repeater : NodeDecorator
 {
 	private int _count, _target;
 
@@ -19,7 +19,7 @@ public class Repeater : LeafDecorator
 	{
 		if(_target == -1 || _count < _target)
 		{
-			Result result = _leaf.Process(datastore);
+			Result result = _node.Process(datastore);
 			if(result != Result.RUNNING) _count++;
 		}
 

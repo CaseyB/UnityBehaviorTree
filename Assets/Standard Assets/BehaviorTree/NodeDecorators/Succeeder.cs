@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class Succeeder : LeafDecorator
+public class Succeeder : NodeDecorator
 {
 	public override Result Process(Dictionary<String, Object> datastore)
 	{
-		_leaf.Process(datastore);
+		_node.Process(datastore);
 		return Result.SUCCESS;
 	}
 }

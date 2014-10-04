@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class Inverter : LeafDecorator
+public class Inverter : NodeDecorator
 {
 	public override Result Process(Dictionary<String, Object> datastore)
 	{
-		Result result = _leaf.Process(datastore);
+		Result result = _node.Process(datastore);
 
 		switch(result)
 		{
