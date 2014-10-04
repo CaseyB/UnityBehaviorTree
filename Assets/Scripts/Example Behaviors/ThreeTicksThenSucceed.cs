@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class ThreeTicksThenSucceed : LeafNode
+public class ThreeTicksThenSucceed : Node
 {
 	private int _ticks;
 
