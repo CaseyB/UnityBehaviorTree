@@ -28,6 +28,9 @@ This is the simplest Composite Node.  It runs its children in order until it get
 ### Selector
 This Composite Node lets you prioritize behavior options and run them in order until one succeeds.
 
+### Parallel
+This Composite Node ticks all of its children each frame until one of them returns failure.
+
 ### Inverter
 This is a Node Decorator that inverts the return of it's child Node.  For example, if you have a node to check for nearby enemies that will return FAILURE when there are one you can put an Inverter on that to tell you if you're in a safe spot (i.e. there are no enemies nearby).
 
