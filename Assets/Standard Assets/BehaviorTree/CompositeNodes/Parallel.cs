@@ -21,7 +21,7 @@ public class Parallel : CompositeNode
 	{
 		foreach(Node node in _nodes)
 		{
-			if(node.Process(datastore)) return Result.FAILURE;
+			if(node.Process(datastore) == Result.FAILURE) return Result.FAILURE;
 		}
 
 		return Result.RUNNING;
