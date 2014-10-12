@@ -11,14 +11,17 @@ public class BehaviorEditor : EditorWindow
 	[MenuItem ("Window/Behavior Tree Editor")]
 	public static void ShowWindow()
 	{
-		_scrollPosition = Vector2.zero;
-		_builtIn = AssetDatabase.FindAssets("t:monoscript", new string[] { "Assets/Standard Assets/BehaviorTree" });
-
 		EditorWindow editor = EditorWindow.GetWindow(typeof(BehaviorEditor));
 		editor.title = "Behavior Tree";
 	}
 
-	void OnGUI()
+	public void OnEnable()
+	{
+		_scrollPosition = Vector2.zero;
+		_builtIn = AssetDatabase.FindAssets("t:monoscript", new string[] { "Assets/Standard Assets/BehaviorTree" });
+	}
+
+	public void OnGUI()
 	{
 		_scrollPosition = GUILayout.BeginScrollView(_scrollPosition, GUIStyle.none);
 
