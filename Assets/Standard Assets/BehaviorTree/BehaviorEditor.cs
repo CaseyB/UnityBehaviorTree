@@ -39,4 +39,10 @@ public class BehaviorEditor : EditorWindow
 
 		GUILayout.EndScrollView();
 	}
+
+	public void OnProjectChange()
+	{
+		_builtIn = AssetDatabase.FindAssets("t:monoscript", new string[] { "Assets/Standard Assets/BehaviorTree" });
+		Repaint();
+	}
 }
