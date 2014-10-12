@@ -8,6 +8,10 @@ public class BehaviorEditor : EditorWindow
 	private static Vector2 _scrollPosition;
 	private static String[] _builtIn;
 
+	private const String USER_BEHAVIOR_PATH = "Assets/Scripts/Behaviors";
+	private Type focusedTask;
+	private Vector2 _mousePosition;
+
 	[MenuItem ("Window/Behavior Tree Editor")]
 	public static void ShowWindow()
 	{
@@ -42,7 +46,13 @@ public class BehaviorEditor : EditorWindow
 
 	public void OnProjectChange()
 	{
-		_builtIn = AssetDatabase.FindAssets("t:monoscript", new string[] { "Assets/Standard Assets/BehaviorTree" });
+		String[] userCreated = AssetDatabase.FindAssets("t:monoscript", new string[] { USER_BEHAVIOR_PATH });
+
+		foreach(String asset in userCreated)
+		{
+			String path = AssetDatabase.GUIDToAssetPath(asset);
+			Behavior b = new Behavior(path.Substring(USER_BEHAVIOR_PATH.Length + 1));
+		}
 		Repaint();
 	}
 }
