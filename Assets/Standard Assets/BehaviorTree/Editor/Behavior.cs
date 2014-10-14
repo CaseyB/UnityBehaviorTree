@@ -29,8 +29,9 @@ public class Behavior
 			_name = scriptPath;
 		}
 
-		Debug.Log("Path: " + scriptPath);
-		Debug.Log("Group: " + _group);
-		Debug.Log("Name: " + _name);
+		_name = _name.Replace(".cs", "");
+		_name = _name.Replace(".js", "");
+		_name = _name.Replace(".boo", "");
+	}
 	}
 }
