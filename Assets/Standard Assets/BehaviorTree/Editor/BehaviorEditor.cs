@@ -44,12 +44,12 @@ public class BehaviorEditor : EditorWindow
 
 		foreach(Behavior behavior in _builtIn)
 		{
-			EditorGUILayout.LabelField(AssetDatabase.GUIDToAssetPath(asset));
+			behavior.OnGUI();
 		}
 
 		foreach(Behavior behavior in _userCreated)
 		{
-			EditorGUILayout.LabelField(AssetDatabase.GUIDToAssetPath(asset));
+			behavior.OnGUI();
 		}
 
 		GUILayout.EndScrollView();

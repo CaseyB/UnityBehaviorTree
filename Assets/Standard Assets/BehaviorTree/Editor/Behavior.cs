@@ -33,5 +33,9 @@ public class Behavior
 		_name = _name.Replace(".js", "");
 		_name = _name.Replace(".boo", "");
 	}
+
+	public void OnGUI()
+	{
+		GUILayout.Box(_name);
 	}
 }
