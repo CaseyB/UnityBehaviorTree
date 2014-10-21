@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class BehaviorEditor : EditorWindow
 {
-	private static Vector2 _scrollPosition;
+
 
 	private List<Behavior> _builtIn;
 	private List<Behavior> _userCreated;
@@ -14,7 +14,14 @@ public class BehaviorEditor : EditorWindow
 	private Type focusedTask;
 	private Vector2 _mousePosition;
 
-	private GUIStyle _myStyle;
+	private GUISkin _mySkin;
+
+
+	private Vector2 _scrollPosition;
+	private Vector2 _scrollArea;
+
+
+
 
 	[MenuItem ("Window/Behavior Tree Editor")]
 	public static void ShowWindow()
@@ -26,6 +33,7 @@ public class BehaviorEditor : EditorWindow
 	public void OnEnable()
 	{
 		_scrollPosition = Vector2.zero;
+		_scrollArea = Vector2.zero;
 		_builtIn = new List<Behavior>();
 		_userCreated = new List<Behavior>();
 
@@ -37,33 +45,73 @@ public class BehaviorEditor : EditorWindow
 			_builtIn.Add(b);
 		}
 
+		String[] skins = AssetDatabase.FindAssets("t:GuiSkin", new string[] { "Assets/Standard Assets/BehaviorTree" });
+		String skinPath = AssetDatabase.GUIDToAssetPath(skins[0]);
+		_mySkin = (GUISkin)AssetDatabase.LoadAssetAtPath(skinPath, typeof(GUISkin));
+
 		OnProjectChange();
 	}
 
 	public void OnGUI()
 	{
-		_myStyle = new GUIStyle(GUI.skin.button);
-		_myStyle.alignment = TextAnchor.MiddleCenter;
+		switch(Event.current.type)
+		{
+		case EventType.Layout:
+			LayoutView();
+			break;
+		case EventType.Repaint:
+			DrawView();
+			break;
+		}
+	}
 
-		_scrollPosition = GUILayout.BeginScrollView(_scrollPosition, GUIStyle.none);
-
+	private void LayoutView()
+	{
+		_scrollArea = Vector2.zero;
 		Vector2 position = Vector2.zero;
+		_scrollArea = _builtIn[0].size;
+		_scrollArea.y = _scrollArea.y * (_builtIn.Count + _userCreated.Count);
+
+		GUILayout.BeginArea(new Rect(this.position.width - _scrollArea.x, 0, _scrollArea.x, this.position.height));
+		_scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition, GUILayout.Width(_scrollArea.x), GUILayout.Height(_scrollArea.y));
+		EditorGUILayout.BeginVertical();
 
 		foreach(Behavior behavior in _builtIn)
 		{
 			behavior.position = position;
-			behavior.OnGUI(_myStyle);
 			position.y += behavior.size.y;
-		}
 
+			_scrollArea.x = Mathf.Max(_scrollArea.x, behavior.size.x);
+			_scrollArea.y = Mathf.Max(_scrollArea.y, position.y);
+		}
+		
 		foreach(Behavior behavior in _userCreated)
 		{
 			behavior.position = position;
-			behavior.OnGUI(_myStyle);
 			position.y += behavior.size.y;
+
+			_scrollArea.x = Mathf.Max(_scrollArea.x, behavior.size.x);
+			_scrollArea.y = Mathf.Max(_scrollArea.y, position.y);
 		}
 
-		GUILayout.EndScrollView();
+		EditorGUILayout.EndVertical();
+		EditorGUILayout.EndScrollView();
+		GUILayout.EndArea();
+	}
+
+	private void DrawView()
+	{
+		GUI.skin = _mySkin;
+
+		foreach(Behavior behavior in _builtIn)
+		{
+			behavior.OnGUI();
+		}
+		
+		foreach(Behavior behavior in _userCreated)
+		{
+			behavior.OnGUI();
+		}
 	}
 
 	public void OnProjectChange()

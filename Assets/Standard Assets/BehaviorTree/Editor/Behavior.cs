@@ -41,8 +41,8 @@ public class Behavior
 		_rect = new Rect(0, 0, 150, 50);
 	}
 
-	public void OnGUI(GUIStyle style)
+	public void OnGUI()
 	{
-		GUI.Box(_rect, _name, style);
+		GUI.Box(_rect, _name);
 	}
 }
