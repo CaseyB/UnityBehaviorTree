@@ -10,6 +10,11 @@ public class Behavior
 	private String _name;
 	public String name { get { return _name; } }
 
+	private Rect _rect;
+	public Rect rect { get { return _rect; } set { _rect = value; } }
+	public Vector2 position { get { return _rect.position; } set { _rect.position = value; } }
+	public Vector2 size { get { return _rect.size; } set { _rect.size = value; } }
+
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Behavior"/> class.
 	/// </summary>
@@ -32,10 +37,12 @@ public class Behavior
 		_name = _name.Replace(".cs", "");
 		_name = _name.Replace(".js", "");
 		_name = _name.Replace(".boo", "");
+
+		_rect = new Rect(0, 0, 150, 50);
 	}
 
-	public void OnGUI()
+	public void OnGUI(GUIStyle style)
 	{
-		GUILayout.Box(_name);
+		GUI.Box(_rect, _name, style);
 	}
 }

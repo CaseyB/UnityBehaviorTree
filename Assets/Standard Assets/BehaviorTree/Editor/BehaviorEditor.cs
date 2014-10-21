@@ -14,6 +14,8 @@ public class BehaviorEditor : EditorWindow
 	private Type focusedTask;
 	private Vector2 _mousePosition;
 
+	private GUIStyle _myStyle;
+
 	[MenuItem ("Window/Behavior Tree Editor")]
 	public static void ShowWindow()
 	{
@@ -40,16 +42,25 @@ public class BehaviorEditor : EditorWindow
 
 	public void OnGUI()
 	{
+		_myStyle = new GUIStyle(GUI.skin.button);
+		_myStyle.alignment = TextAnchor.MiddleCenter;
+
 		_scrollPosition = GUILayout.BeginScrollView(_scrollPosition, GUIStyle.none);
+
+		Vector2 position = Vector2.zero;
 
 		foreach(Behavior behavior in _builtIn)
 		{
-			behavior.OnGUI();
+			behavior.position = position;
+			behavior.OnGUI(_myStyle);
+			position.y += behavior.size.y;
 		}
 
 		foreach(Behavior behavior in _userCreated)
 		{
-			behavior.OnGUI();
+			behavior.position = position;
+			behavior.OnGUI(_myStyle);
+			position.y += behavior.size.y;
 		}
 
 		GUILayout.EndScrollView();
@@ -67,5 +78,10 @@ public class BehaviorEditor : EditorWindow
 			_userCreated.Add(b);
 		}
 		Repaint();
+	}
+
+	private void InitStyle()
+	{
+
 	}
 }
