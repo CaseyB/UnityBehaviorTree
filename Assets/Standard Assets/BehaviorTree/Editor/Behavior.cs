@@ -45,4 +45,9 @@ public class Behavior
 	{
 		GUI.Box(_rect, _name);
 	}
+
+	public void OnGUI(GUIStyle style)
+	{
+		GUI.Box(_rect, _name, style);
+	}
 }

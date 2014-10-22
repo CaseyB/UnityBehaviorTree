@@ -18,7 +18,8 @@ public class BehaviorEditor : EditorWindow
 
 
 	private Vector2 _scrollPosition;
-	private Vector2 _scrollArea;
+	private Rect _scrollViewPosition;
+	private Rect _scrollArea;
 
 
 
@@ -33,7 +34,6 @@ public class BehaviorEditor : EditorWindow
 	public void OnEnable()
 	{
 		_scrollPosition = Vector2.zero;
-		_scrollArea = Vector2.zero;
 		_builtIn = new List<Behavior>();
 		_userCreated = new List<Behavior>();
 
@@ -46,72 +46,49 @@ public class BehaviorEditor : EditorWindow
 		}
 
 		String[] skins = AssetDatabase.FindAssets("t:GuiSkin", new string[] { "Assets/Standard Assets/BehaviorTree" });
-		String skinPath = AssetDatabase.GUIDToAssetPath(skins[0]);
-		_mySkin = (GUISkin)AssetDatabase.LoadAssetAtPath(skinPath, typeof(GUISkin));
+		if(skins.Length > 0)
+		{
+			String skinPath = AssetDatabase.GUIDToAssetPath(skins[0]);
+			_mySkin = (GUISkin)AssetDatabase.LoadAssetAtPath(skinPath, typeof(GUISkin));
+		}
+		else
+		{
+			Debug.Log("Behavior GUISkin Not Found!");
+		}
 
 		OnProjectChange();
 	}
 
 	public void OnGUI()
 	{
-		switch(Event.current.type)
-		{
-		case EventType.Layout:
-			LayoutView();
-			break;
-		case EventType.Repaint:
-			DrawView();
-			break;
-		}
-	}
-
-	private void LayoutView()
-	{
-		_scrollArea = Vector2.zero;
-		Vector2 position = Vector2.zero;
-		_scrollArea = _builtIn[0].size;
-		_scrollArea.y = _scrollArea.y * (_builtIn.Count + _userCreated.Count);
-
-		GUILayout.BeginArea(new Rect(this.position.width - _scrollArea.x, 0, _scrollArea.x, this.position.height));
-		_scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition, GUILayout.Width(_scrollArea.x), GUILayout.Height(_scrollArea.y));
-		EditorGUILayout.BeginVertical();
-
-		foreach(Behavior behavior in _builtIn)
-		{
-			behavior.position = position;
-			position.y += behavior.size.y;
-
-			_scrollArea.x = Mathf.Max(_scrollArea.x, behavior.size.x);
-			_scrollArea.y = Mathf.Max(_scrollArea.y, position.y);
-		}
-		
-		foreach(Behavior behavior in _userCreated)
-		{
-			behavior.position = position;
-			position.y += behavior.size.y;
-
-			_scrollArea.x = Mathf.Max(_scrollArea.x, behavior.size.x);
-			_scrollArea.y = Mathf.Max(_scrollArea.y, position.y);
-		}
-
-		EditorGUILayout.EndVertical();
-		EditorGUILayout.EndScrollView();
-		GUILayout.EndArea();
-	}
-
-	private void DrawView()
-	{
 		GUI.skin = _mySkin;
 
+		Vector2 behaviorSize = _builtIn[0].size;
+		Vector2 windowSize = position.size;
+
+		_scrollViewPosition = new Rect(windowSize.x - behaviorSize.x - 17, 0, behaviorSize.x + 17, windowSize.y);
+		_scrollArea = new Rect(0, 0, behaviorSize.x, behaviorSize.y * (_builtIn.Count + _userCreated.Count));
+
+		_scrollPosition = GUI.BeginScrollView(_scrollViewPosition, _scrollPosition, _scrollArea, false, true);
+
+		Vector2 itemPos = Vector2.zero;
 		foreach(Behavior behavior in _builtIn)
 		{
+			behavior.position = itemPos;
+			itemPos.y += behavior.size.y;
+
 			behavior.OnGUI();
 		}
-		
+
 		foreach(Behavior behavior in _userCreated)
 		{
-			behavior.OnGUI();
+			behavior.position = itemPos;
+			itemPos.y += behavior.size.y;
+
+			behavior.OnGUI(GUI.skin.customStyles[0]);
 		}
+
+		GUI.EndScrollView();
 	}
 
 	public void OnProjectChange()
