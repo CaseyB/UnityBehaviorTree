@@ -38,7 +38,7 @@ public class Behavior
 		_name = _name.Replace(".js", "");
 		_name = _name.Replace(".boo", "");
 
-		_rect = new Rect(0, 0, 150, 50);
+		_rect = new Rect(0, 0, 140, 40);
 	}
 
 	public void OnGUI()
